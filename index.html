@@ -3,29 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My YouTube Mixtape</title>
+<title>Vintage Cassette Mixtape</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=VT323&family=Permanent+Marker&family=Share+Tech+Mono&display=swap');
+
   body {
-    background-color: #1f1f1f;
-    font-family: 'Courier New', Courier, monospace;
+    background: radial-gradient(circle, #2b2b2b 0%, #111111 100%);
+    font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     color: #e6dfd3;
+    overflow-x: hidden;
   }
 
-  /* Cassette Tape Container */
-  .cassette {
-    width: 400px;
-    height: 250px;
-    background: #e6dfd3;
-    border-radius: 12px;
-    border: 4px solid #111;
+  /* Boombox / Deck Chassis */
+  .deck-chassis {
+    background: linear-gradient(135deg, #3a3a3a 0%, #1c1c1c 100%);
+    border: 6px solid #0d0d0d;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.8), inset 0 2px 5px rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+    max-width: 480px;
+    width: 90%;
+  }
+
+  /* Cassette Tape Body */
+  .cassette {
+    width: 420px;
+    height: 260px;
+    background: #e8e1d3;
+    border-radius: 14px;
+    border: 4px solid #1a1a1a;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -33,50 +51,84 @@
     box-sizing: border-box;
   }
 
-  /* Label Sticker */
+  /* Screw Elements */
+  .screw {
+    width: 10px;
+    height: 10px;
+    background: #b5b5b5;
+    border-radius: 50%;
+    border: 1px solid #555;
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+    position: absolute;
+  }
+  .screw-tl { top: 8px; left: 8px; }
+  .screw-tr { top: 8px; right: 8px; }
+  .screw-bl { bottom: 8px; left: 8px; }
+  .screw-br { bottom: 8px; right: 8px; }
+
+  /* Cassette Label Sticker */
   .cassette-label {
-    background: #f4edd3;
+    background: #fbf6e2;
     border: 2px dashed #b5a684;
-    border-radius: 6px;
-    height: 130px;
-    padding: 10px;
+    border-radius: 8px;
+    height: 140px;
+    margin: 8px 12px;
+    padding: 8px 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
   }
 
   .mixtape-title {
-    font-weight: bold;
-    font-size: 18px;
-    color: #b93b27;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 20px;
+    color: #c0392b;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    transform: rotate(-1deg);
   }
 
-  /* Tape Window / Reels */
+  /* LED Track Screen Display */
+  .track-display {
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    color: #00ffcc;
+    background: #0f1512;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid #224433;
+    box-shadow: inset 0 0 5px rgba(0,255,204,0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Tape Spool Window */
   .tape-window-area {
     background: #111;
-    width: 180px;
-    height: 55px;
+    width: 200px;
+    height: 50px;
     margin: 0 auto;
     border-radius: 6px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: 2px solid #444;
+    border: 3px solid #333;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.9);
   }
 
   .reel {
-    width: 38px;
-    height: 38px;
-    border: 6px solid #ccc;
+    width: 36px;
+    height: 36px;
+    border: 6px solid #dcd6c8;
     border-radius: 50%;
-    background: #222;
+    background: #1a1a1a;
     position: relative;
+    box-shadow: 0 0 5px rgba(0,0,0,0.8);
   }
 
-  /* Spinning animation class toggled via JavaScript */
   .spinning {
     animation: spin 2s linear infinite;
   }
@@ -84,12 +136,12 @@
   .reel::after {
     content: '';
     position: absolute;
-    top: 11px;
-    left: 11px;
+    top: 9px;
+    left: 9px;
     width: 4px;
     height: 4px;
-    background: #ccc;
-    box-shadow: 11px 0 #ccc, 5.5px 9.5px #ccc, 5.5px -9.5px #ccc;
+    background: #dcd6c8;
+    box-shadow: 9px 0 #dcd6c8, 4.5px 7.5px #dcd6c8, 4.5px -7.5px #dcd6c8;
   }
 
   @keyframes spin {
@@ -97,123 +149,233 @@
     100% { transform: rotate(360deg); }
   }
 
-  /* Bottom Details & Screws */
-  .cassette-bottom {
+  .label-footer {
     display: flex;
     justify-content: space-between;
-    padding: 0 15px;
+    font-size: 10px;
+    color: #666;
+    font-weight: bold;
+    letter-spacing: 1px;
   }
 
-  .screw {
-    width: 10px;
-    height: 10px;
-    background: #ccc;
-    border-radius: 50%;
-    border: 1px solid #777;
+  /* Cassette Bottom Housing */
+  .cassette-bottom-housing {
+    height: 35px;
+    background: #d4ccbd;
+    margin: 0 35px;
+    border-radius: 0 0 6px 6px;
+    border: 2px solid #b5ab9a;
+    border-top: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
 
-  /* Retro Control Deck */
+  .tooth {
+    width: 12px;
+    height: 12px;
+    background: #8c8375;
+    border-radius: 2px;
+  }
+
+  /* Control Deck / Buttons Panel */
   .deck-controls {
     margin-top: 25px;
     display: flex;
-    gap: 15px;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
   }
 
   .deck-btn {
-    background: #333;
-    color: #e6dfd3;
-    border: 2px solid #555;
-    padding: 10px 20px;
-    font-family: inherit;
+    background: linear-gradient(to bottom, #555 0%, #222 100%);
+    color: #f1f1f1;
+    border: 2px solid #111;
+    padding: 10px 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    transition: all 0.1s ease;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    transition: all 0.08s ease;
+    text-transform: uppercase;
+  }
+
+  .deck-btn:hover {
+    background: linear-gradient(to bottom, #666, #333);
   }
 
   .deck-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
-    background: #b93b27;
-    border-color: #802316;
+    transform: translateY(3px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 1px 1px rgba(0,0,0,0.5);
+    background: #962d22;
+    border-color: #5c1811;
   }
 
-  /* Hide the actual YouTube iframe element */
-  #hidden-yt-player {
-    display: none;
+  /* Playlist Drawer / Track List UI */
+  .playlist-container {
+    margin-top: 20px;
+    width: 100%;
+    background: #141414;
+    border: 2px solid #333;
+    border-radius: 8px;
+    max-height: 130px;
+    overflow-y: auto;
+    padding: 5px;
+    box-sizing: border-box;
   }
+
+  .playlist-item {
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 1px solid #222;
+    border-radius: 4px;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .playlist-item:hover {
+    background: #222;
+    color: #ccc;
+  }
+
+  .playlist-item.active {
+    background: #1a2e26;
+    color: #00ffcc;
+    font-weight: bold;
+    border-left: 4px solid #00ffcc;
+  }
+
+  /* Custom Scrollbar for Playlist */
+  .playlist-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  .playlist-container::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+  }
+
+  #audio-player { display: none; }
 </style>
 </head>
 <body>
 
-  <div class="cassette">
-    <div class="cassette-label">
-      <div class="mixtape-title">For You - Tejashwini</div>
-      <div class="tape-window-area">
-        <div id="reel-left" class="reel"></div>
-        <div id="reel-right" class="reel"></div>
+  <div class="deck-chassis">
+    
+    <div class="cassette">
+      <div class="screw screw-tl"></div>
+      <div class="screw screw-tr"></div>
+      <div class="screw screw-bl"></div>
+      <div class="screw screw-br"></div>
+
+      <div class="cassette-label">
+        <div class="mixtape-title">For You - Tejashwini</div>
+        <div id="track-screen" class="track-display">READY...</div>
+        <div class="tape-window-area">
+          <div id="reel-left" class="reel"></div>
+          <div id="reel-right" class="reel"></div>
+        </div>
+        <div class="label-footer">
+          <span>STEREO</span>
+          <span>NORMAL [Type I]</span>
+          <span>DOLBY B-C NR</span>
+        </div>
       </div>
-      <div style="font-size: 10px; color: #555; text-align: center;">SIDE A // STEREO</div>
+
+      <div class="cassette-bottom-housing">
+        <div class="tooth"></div>
+        <div class="tooth"></div>
+        <div class="tooth"></div>
+      </div>
     </div>
-    <div class="cassette-bottom">
-      <div class="screw"></div>
-      <div class="screw"></div>
+
+    <div class="deck-controls">
+      <button class="deck-btn" onclick="prevTrack()">⏮ Prev</button>
+      <button class="deck-btn" onclick="togglePlay()">▶ Play / Pause</button>
+      <button class="deck-btn" onclick="nextTrack()">Next ⏭</button>
     </div>
+
+    <div id="playlist-view" class="playlist-container">
+      </div>
+
   </div>
 
-  <div class="deck-controls">
-    <button class="deck-btn" onclick="togglePlay()">PLAY/PAUSE</button>
-    <button class="deck-btn" onclick="nextTrack()">NEXT TRACK</button>
-  </div>
-
-  <div id="hidden-yt-player"></div>
+  <audio id="audio-player"></audio>
 
   <script>
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // ==========================================
+    // STEP 1: ADD YOUR LOCAL MP3 FILE NAMES HERE
+    // ==========================================
+    const mixtapeTracks = [
+      { title: "01. Olave Mounave", file: "Olave Mounave.mp3" },
+      { title: "02. Ninna Naguvu Hoovanthe", file: "Ninna Naguvu.mp3" },
+      { title: "03. Bayasade Bali Bande", file: "Bayasade Bali Bande.mp3" }
+    ];
 
-    var player;
-    // REPLACE 'YOUR_PLAYLIST_ID' with your actual public YouTube playlist ID
-    var playlistId = 'PLbmKyKGMvxBw'; 
+    let currentIndex = 0;
+    const audio = document.getElementById('audio-player');
+    const leftReel = document.getElementById('reel-left');
+    const rightReel = document.getElementById('reel-right');
+    const trackScreen = document.getElementById('track-screen');
+    const playlistView = document.getElementById('playlist-view');
 
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('hidden-yt-player', {
-        height: '0',
-        width: '0',
-        playerVars: {
-          'listType': 'playlist',
-          'list': playlistId,
-          'autoplay': 0
-        },
-        events: {
-          'onStateChange': onPlayerStateChange
-        }
+    // Build Playlist Drawer UI
+    function buildPlaylistUI() {
+      playlistView.innerHTML = '';
+      mixtapeTracks.forEach((track, idx) => {
+        const item = document.createElement('div');
+        item.className = `playlist-item ${idx === currentIndex ? 'active' : ''}`;
+        item.innerHTML = `<span>${track.title}</span>`;
+        item.onclick = () => {
+          currentIndex = idx;
+          loadAndPlayTrack(currentIndex);
+        };
+        playlistView.appendChild(item);
+      });
+    }
+
+    function loadAndPlayTrack(index) {
+      audio.src = mixtapeTracks[index].file;
+      trackScreen.innerText = mixtapeTracks[index].title;
+      buildPlaylistUI();
+      audio.play().then(() => {
+        setSpinning(true);
+      }).catch(err => {
+        console.log("Playback interaction required:", err);
       });
     }
 
     function togglePlay() {
-      var state = player.getPlayerState();
-      // If playing (1), pause it. Otherwise, play.
-      if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
+      if (!audio.src) {
+        loadAndPlayTrack(currentIndex);
+        return;
+      }
+
+      if (audio.paused) {
+        audio.play();
+        setSpinning(true);
       } else {
-        player.playVideo();
+        audio.pause();
+        setSpinning(false);
       }
     }
 
     function nextTrack() {
-      player.nextVideo();
+      currentIndex = (currentIndex + 1) % mixtapeTracks.length;
+      loadAndPlayTrack(currentIndex);
     }
 
-    // Sync cassette spinning animation with YouTube playback state
-    function onPlayerStateChange(event) {
-      const leftReel = document.getElementById('reel-left');
-      const rightReel = document.getElementById('reel-right');
+    function prevTrack() {
+      currentIndex = (currentIndex - 1 + mixtapeTracks.length) % mixtapeTracks.length;
+      loadAndPlayTrack(currentIndex);
+    }
 
-      if (event.data == YT.PlayerState.PLAYING) {
+    function setSpinning(isSpinning) {
+      if (isSpinning) {
         leftReel.classList.add('spinning');
         rightReel.classList.add('spinning');
       } else {
@@ -221,6 +383,23 @@
         rightReel.classList.remove('spinning');
       }
     }
+
+    // Auto-advance playlist when song ends
+    audio.addEventListener('ended', () => {
+      if (currentIndex < mixtapeTracks.length - 1) {
+        currentIndex++;
+        loadAndPlayTrack(currentIndex);
+      } else {
+        setSpinning(false);
+        trackScreen.innerText = "END OF MIXTAPE";
+        currentIndex = 0;
+        buildPlaylistUI();
+      }
+    });
+
+    // Initialize display on load
+    trackScreen.innerText = "INSERT TAPE / PRESS PLAY";
+    buildPlaylistUI();
   </script>
 
 </body>
