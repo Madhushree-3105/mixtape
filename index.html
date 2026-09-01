@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My YouTube Mixtape</title>
+<style>
+  body {
+    background-color: #1f1f1f;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #e6dfd3;
+  }
+
+  /* Cassette Tape Container */
+  .cassette {
+    width: 400px;
+    height: 250px;
+    background: #e6dfd3;
+    border-radius: 12px;
+    border: 4px solid #111;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  /* Label Sticker */
+  .cassette-label {
+    background: #f4edd3;
+    border: 2px dashed #b5a684;
+    border-radius: 6px;
+    height: 130px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .mixtape-title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #b93b27;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* Tape Window / Reels */
+  .tape-window-area {
+    background: #111;
+    width: 180px;
+    height: 55px;
+    margin: 0 auto;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid #444;
+  }
+
+  .reel {
+    width: 38px;
+    height: 38px;
+    border: 6px solid #ccc;
+    border-radius: 50%;
+    background: #222;
+    position: relative;
+  }
+
+  /* Spinning animation class toggled via JavaScript */
+  .spinning {
+    animation: spin 2s linear infinite;
+  }
+
+  .reel::after {
+    content: '';
+    position: absolute;
+    top: 11px;
+    left: 11px;
+    width: 4px;
+    height: 4px;
+    background: #ccc;
+    box-shadow: 11px 0 #ccc, 5.5px 9.5px #ccc, 5.5px -9.5px #ccc;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Bottom Details & Screws */
+  .cassette-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+  }
+
+  .screw {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    border-radius: 50%;
+    border: 1px solid #777;
+  }
+
+  /* Retro Control Deck */
+  .deck-controls {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+  }
+
+  .deck-btn {
+    background: #333;
+    color: #e6dfd3;
+    border: 2px solid #555;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: all 0.1s ease;
+  }
+
+  .deck-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+    background: #b93b27;
+    border-color: #802316;
+  }
+
+  /* Hide the actual YouTube iframe element */
+  #hidden-yt-player {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+  <div class="cassette">
+    <div class="cassette-label">
+      <div class="mixtape-title">My Custom Mixtape</div>
+      <div class="tape-window-area">
+        <div id="reel-left" class="reel"></div>
+        <div id="reel-right" class="reel"></div>
+      </div>
+      <div style="font-size: 10px; color: #555; text-align: center;">SIDE A // STEREO</div>
+    </div>
+    <div class="cassette-bottom">
+      <div class="screw"></div>
+      <div class="screw"></div>
+    </div>
+  </div>
+
+  <div class="deck-controls">
+    <button class="deck-btn" onclick="togglePlay()">PLAY / PAUSE</button>
+    <button class="deck-btn" onclick="nextTrack()">NEXT TRACK</button>
+  </div>
+
+  <div id="hidden-yt-player"></div>
+
+  <script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    // REPLACE 'YOUR_PLAYLIST_ID' with your actual public YouTube playlist ID
+    var playlistId = 'PLbmKyKGMvxBw&si=duRXAD4JOXU87kN1'; 
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('hidden-yt-player', {
+        height: '0',
+        width: '0',
+        playerVars: {
+          'listType': 'playlist',
+          'list': playlistId,
+          'autoplay': 0
+        },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function togglePlay() {
+      var state = player.getPlayerState();
+      // If playing (1), pause it. Otherwise, play.
+      if (state === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+    }
+
+    function nextTrack() {
+      player.nextVideo();
+    }
+
+    // Sync cassette spinning animation with YouTube playback state
+    function onPlayerStateChange(event) {
+      const leftReel = document.getElementById('reel-left');
+      const rightReel = document.getElementById('reel-right');
+
+      if (event.data == YT.PlayerState.PLAYING) {
+        leftReel.classList.add('spinning');
+        rightReel.classList.add('spinning');
+      } else {
+        leftReel.classList.remove('spinning');
+        rightReel.classList.remove('spinning');
+      }
+    }
+  </script>
+
+</body>
+</html>
